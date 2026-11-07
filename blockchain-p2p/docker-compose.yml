@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  peer1:
+    build: .  
+    container_name: peer1
+    command: python peer.py --host 0.0.0.0 --port 5001
+    networks:
+      - p2p_network
+    environment:
+      - PEER_HOST=peer2 
+    ports:
+      - "5001:5001" 
+      
+      
+  peer2:
+    build: .  
+    container_name: peer2
+    command: python peer.py --host 0.0.0.0 --port 5002
+    networks:
+      - p2p_network
+    environment:
+      - PEER_HOST=peer1 
+    ports:
+      - "5002:5002" 
+    
+
+networks:
+  p2p_network:
+    driver: bridge  
